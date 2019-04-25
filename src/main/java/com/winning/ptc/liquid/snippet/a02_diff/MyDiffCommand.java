@@ -1,4 +1,4 @@
-package com.winning.ptc.liquid.snippet.cmd;
+package com.winning.ptc.liquid.snippet.a02_diff;
 
 import liquibase.command.core.DiffCommand;
 import liquibase.diff.DiffResult;

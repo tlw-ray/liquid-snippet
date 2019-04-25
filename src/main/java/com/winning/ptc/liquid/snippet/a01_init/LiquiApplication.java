@@ -1,4 +1,4 @@
-package com.winning.ptc.liquid.snippet.app;
+package com.winning.ptc.liquid.snippet.a01_init;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

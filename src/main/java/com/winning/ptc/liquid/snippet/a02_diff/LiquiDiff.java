@@ -1,4 +1,4 @@
-package com.winning.ptc.liquid.snippet.cmd;
+package com.winning.ptc.liquid.snippet.a02_diff;
 
 import liquibase.command.CommandExecutionException;
 import liquibase.command.core.DiffCommand;
@@ -12,15 +12,13 @@ import liquibase.diff.compare.CompareControl;
 import liquibase.diff.output.DiffOutputControl;
 import liquibase.exception.DatabaseException;
 import liquibase.snapshot.InvalidExampleException;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 
 import javax.xml.bind.JAXB;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class LiquiCommand{
+public class LiquiDiff {
 
     public static void main(String[] args) throws CommandExecutionException, SQLException {
         //操作1: 获得数据库之间的差异的文本描述
