@@ -34,7 +34,7 @@
 - 配置Applications.properties
     ~~~Properties
     spring.datasource.driver-class-name=org.h2.Driver
-    spring.datasource.url=jdbc:h2:mem:test;
+    spring.datasource.url=jdbc:h2:./test;
     spring.datasource.username=sa
     spring.datasource.password=sa
     spring.h2.console.enabled=true
@@ -50,7 +50,7 @@
     - 更新数据: update-person-table-precondition-3.xml
 - 编写SpringBoot的启动代码： LiquiApplication.java。
 - 启动项目会发现日志输出增加了建表、插数据、更新数据的语句。
-- 访问http://localhost:8080/h2-console访问数据库(修改JDBC URL为: jdbc:h2:mem:test)会发现该数据库中已经存在PERSON表，其中包含一条数据。
+- 访问http://localhost:8080/h2-console访问数据库(修改JDBC URL为: jdbc:h2:./test)会发现该数据库中已经存在PERSON表，其中包含一条数据。
 
 ## 2 使用Liquibase对比数据库
 
@@ -62,10 +62,10 @@
 
 - 创建SpringBoot的命令行启动程序: LiquiCommand.java
 - 编写功能函数: diffCommand();
-    - 建立数据库连接
+    - 建立两个不同的数据库连接，一个是被之前web项目初始化过的，一个没有进行过任何操作的内存库
         ~~~Java
-        Connection connection1 = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa");
-        Connection connection2 = DriverManager.getConnection("jdbc:h2:mem:test1");
+        Connection connection1 = DriverManager.getConnection("jdbc:h2:./test", "sa", "sa");
+        Connection connection2 = DriverManager.getConnection("jdbc:h2:mem:test");
         ~~~
   
     - 封装为Liquibase可接受的连接对象
