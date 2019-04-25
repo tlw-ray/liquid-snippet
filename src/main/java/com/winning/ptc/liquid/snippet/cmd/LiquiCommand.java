@@ -1,10 +1,9 @@
-package com.winning.ptc.liquid.dos.cmd;
+package com.winning.ptc.liquid.snippet.cmd;
 
 import liquibase.command.CommandExecutionException;
 import liquibase.command.core.DiffCommand;
 import liquibase.command.core.DiffToChangeLogCommand;
 import liquibase.command.core.GenerateChangeLogCommand;
-import liquibase.database.Database;
 import liquibase.database.DatabaseConnection;
 import liquibase.database.core.H2Database;
 import liquibase.database.jvm.JdbcConnection;
@@ -13,8 +12,6 @@ import liquibase.diff.compare.CompareControl;
 import liquibase.diff.output.DiffOutputControl;
 import liquibase.exception.DatabaseException;
 import liquibase.snapshot.InvalidExampleException;
-import liquibase.snapshot.SnapshotListener;
-import liquibase.structure.DatabaseObject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 
@@ -23,14 +20,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class LiquiCommand implements CommandLineRunner {
+public class LiquiCommand{
 
-    public static void main(String[] args){
-        SpringApplication.run(LiquiCommand.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
+    public static void main(String[] args) throws CommandExecutionException, SQLException {
         //操作1: 获得数据库之间的差异的文本描述
         diffCommand();
 
@@ -44,43 +36,43 @@ public class LiquiCommand implements CommandLineRunner {
 //        myDiffCommand();
     }
 
-    private void diffCommand() throws SQLException, CommandExecutionException {
+    private static void diffCommand() throws SQLException, CommandExecutionException {
         System.out.println("\n\n\nDiffCommand:");
         DiffCommand diffCommand = new DiffCommand();
-        //添加监听回调，在触发对比前输出一段文字
-        diffCommand.setSnapshotListener(new SnapshotListener() {
-            @Override
-            public void willSnapshot(DatabaseObject example, Database database) {
-                System.out.println("------willSnapshot: " + example + "\t" + database);
-            }
-
-            @Override
-            public void finishedSnapshot(DatabaseObject example, DatabaseObject snapshot, Database database) {
-
-            }
-        });
+        //可添加监听回调，在触发对比前输出一段文字
+//        diffCommand.setSnapshotListener(new SnapshotListener() {
+//            @Override
+//            public void willSnapshot(DatabaseObject example, Database database) {
+//                System.out.println("------willSnapshot: " + example + "\t" + database);
+//            }
+//
+//            @Override
+//            public void finishedSnapshot(DatabaseObject example, DatabaseObject snapshot, Database database) {
+//
+//            }
+//        });
         initializeAndRunDiffCommand(diffCommand);
     }
 
-    private void diffToChangeLogCommand() throws CommandExecutionException, SQLException {
+    private static void diffToChangeLogCommand() throws CommandExecutionException, SQLException {
         System.out.println("\n\n\nDiffToChangeLogCommand:");
         DiffToChangeLogCommand diffCommand = new DiffToChangeLogCommand();
         diffCommand.setDiffOutputControl(new DiffOutputControl());
         initializeAndRunDiffCommand(diffCommand);
     }
 
-    private void generateChangeLogCommand() throws CommandExecutionException, SQLException {
+    private static void generateChangeLogCommand() throws CommandExecutionException, SQLException {
         System.out.println("\n\n\nGenerateChangeLogCommand:");
         GenerateChangeLogCommand diffCommand = new GenerateChangeLogCommand();
         diffCommand.setDiffOutputControl(new DiffOutputControl());
         initializeAndRunDiffCommand(diffCommand);
     }
 
-    private void myDiffCommand() throws CommandExecutionException, SQLException, DatabaseException, InvalidExampleException {
+    private static void myDiffCommand() throws CommandExecutionException, SQLException, DatabaseException, InvalidExampleException {
         System.out.println("\n\n\nMyDiffCommand:");
         MyDiffCommand myDiffCommand = new MyDiffCommand();
-        Connection connection1 = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa");
-        Connection connection2 = DriverManager.getConnection("jdbc:h2:mem:test1");
+        Connection connection1 = DriverManager.getConnection("jdbc:h2:./test", "sa", "sa");
+        Connection connection2 = DriverManager.getConnection("jdbc:h2:mem:test");
         DatabaseConnection databaseConnection1 = new JdbcConnection(connection1);
         DatabaseConnection databaseConnection2 = new JdbcConnection(connection2);
         H2Database h2Database1 = new H2Database();
@@ -96,10 +88,10 @@ public class LiquiCommand implements CommandLineRunner {
         JAXB.marshal(diffResult, System.out);
     }
 
-    private void initializeAndRunDiffCommand(DiffCommand diffCommand) throws SQLException, CommandExecutionException {
+    private static void initializeAndRunDiffCommand(DiffCommand diffCommand) throws SQLException, CommandExecutionException {
         //建立数据库连接
-        Connection connection1 = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa");
-        Connection connection2 = DriverManager.getConnection("jdbc:h2:mem:test1");
+        Connection connection1 = DriverManager.getConnection("jdbc:h2:./test", "sa", "sa");
+        Connection connection2 = DriverManager.getConnection("jdbc:h2:mem:test");
 
         //封装为Liquibase可接受的连接对象
         DatabaseConnection databaseConnection1 = new JdbcConnection(connection1);

@@ -8,37 +8,43 @@ plugins{
 
 apply from: 'dependency.gradle'
 
-allprojects {
-    repositories {
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+//allprojects {
+//
+//}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
     }
 }
 
-subprojects {
+//subprojects {
+//
+//
+//}
 
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-    group = 'com.winning.ptc'
-    version = "1.0"
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+group = 'com.winning.ptc'
+version = "1.0"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
-    dependencies {
-        compile(
-                libraries.h2,
-                libraries.liquibase,
-                libraries.'spring-boot-devtools',
-        )
-        testCompile(
-                libraries.junit,
-        )
-    }
+dependencies {
+    compile(
+            libraries.h2,
+            libraries.liquibase,
+            libraries.'spring-boot-devtools',
+            libraries.'spring-boot-starter-jdbc',
+            libraries.'spring-boot-starter-web',
+    )
+    testCompile(
+            libraries.junit,
+    )
 }

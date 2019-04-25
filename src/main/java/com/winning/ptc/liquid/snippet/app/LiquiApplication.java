@@ -1,4 +1,4 @@
-package com.winning.ptc.liquid.dos.app;
+package com.winning.ptc.liquid.snippet.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
