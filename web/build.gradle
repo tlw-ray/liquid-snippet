@@ -1,0 +1,6 @@
+dependencies{
+    compile(
+            libraries.'spring-boot-starter-jdbc',
+            libraries.'spring-boot-starter-web',
+    )
+}
