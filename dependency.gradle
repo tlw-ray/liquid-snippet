@@ -9,9 +9,11 @@ ext.versions = [
         poi: '4.0.1',
         springboot : '2.1.2.RELEASE',
         swagger2: '2.9.2',
+        fastjson: '1.2.34',
 ]
 ext.libraries = [
         "commons-cli": "commons-cli:commons-cli:${versions.commons_cli}",
+        "fastjson": "com.alibaba:fastjson:${versions.fastjson}",
         "h2": "com.h2database:h2:${versions.h2}",
         "junit" : "junit:junit:${versions.junit}",
         "liquibase": "org.liquibase:liquibase-core:${versions.liquibase}",

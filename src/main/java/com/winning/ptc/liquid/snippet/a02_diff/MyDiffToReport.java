@@ -214,7 +214,7 @@ public class MyDiffToReport {
         }
 
         if (string.areEqual()) {
-            out.println(" EQUAL");
+            out.println("相同: " + string.getReferenceVersion());
         } else {
             String referenceVersion = string.getReferenceVersion();
             if (referenceVersion == null) {

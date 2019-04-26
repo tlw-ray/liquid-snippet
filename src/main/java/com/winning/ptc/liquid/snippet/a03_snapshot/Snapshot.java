@@ -21,8 +21,6 @@ import java.sql.SQLException;
 
 public class Snapshot {
     public static void main(String[] args) throws SQLException, CommandExecutionException, LiquibaseException {
-        System.setProperty("logging.level.liquibase", "INFO");
-
         //建立数据库连接
         Connection connection1 = DriverManager.getConnection("jdbc:h2:./test", "sa", "sa");
 

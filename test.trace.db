@@ -1,0 +1,23 @@
+04-25 14:44:13 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK [42102-131]
+04-26 15:49:30 database: close
+org.h2.message.DbException: IO Exception: "java.io.EOFException"; "D:\winning\2019\0424Liquidb\liquid-snippet\test.h2.db" [90031-131]
+	at org.h2.message.DbException.get(DbException.java:156)
+	at org.h2.message.DbException.convertIOException(DbException.java:302)
+	at org.h2.store.FileStore.readFully(FileStore.java:284)
+	at org.h2.store.PageStore.readPage(PageStore.java:965)
+	at org.h2.store.PageStore.getPage(PageStore.java:483)
+	at org.h2.store.PageStreamTrunk$Iterator.next(PageStreamTrunk.java:236)
+	at org.h2.store.PageLog.free(PageLog.java:196)
+	at org.h2.store.PageStore.compact(PageStore.java:382)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1106)
+	at org.h2.engine.Database.close(Database.java:1057)
+	at org.h2.engine.DatabaseCloser.run(DatabaseCloser.java:80)
+Caused by: org.h2.jdbc.JdbcSQLException: IO Exception: "java.io.EOFException"; "D:\winning\2019\0424Liquidb\liquid-snippet\test.h2.db" [90031-131]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:316)
+	... 11 more
+Caused by: java.io.EOFException
+	at java.io.RandomAccessFile.readFully(RandomAccessFile.java:438)
+	at org.h2.store.FileStore.readFully(FileStore.java:282)
+	... 8 more

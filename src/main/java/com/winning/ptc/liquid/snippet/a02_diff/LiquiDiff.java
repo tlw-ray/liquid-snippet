@@ -20,9 +20,9 @@ import java.sql.SQLException;
 
 public class LiquiDiff {
 
-    public static void main(String[] args) throws CommandExecutionException, SQLException {
+    public static void main(String[] args) throws SQLException, DatabaseException, InvalidExampleException {
         //操作1: 获得数据库之间的差异的文本描述
-        diffCommand();
+//        diffCommand();
 
         //操作2: 获得差异的XML
 //        diffToChangeLogCommand();
@@ -31,7 +31,7 @@ public class LiquiDiff {
 //        generateChangeLogCommand();
 
         //操作4: 自定义的对比操作，输出DiffResult
-//        myDiffCommand();
+        myDiffCommand();
     }
 
     private static void diffCommand() throws SQLException, CommandExecutionException {
@@ -66,7 +66,7 @@ public class LiquiDiff {
         initializeAndRunDiffCommand(diffCommand);
     }
 
-    private static void myDiffCommand() throws CommandExecutionException, SQLException, DatabaseException, InvalidExampleException {
+    private static void myDiffCommand() throws SQLException, DatabaseException, InvalidExampleException {
         System.out.println("\n\n\nMyDiffCommand:");
         MyDiffCommand myDiffCommand = new MyDiffCommand();
         Connection connection1 = DriverManager.getConnection("jdbc:h2:./test", "sa", "sa");
