@@ -38,6 +38,7 @@ targetCompatibility = 1.8
 
 dependencies {
     compile(
+            libraries."commons-io",
             libraries.h2,
             libraries.liquibase,
             libraries.fastjson,

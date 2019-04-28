@@ -1,17 +1,11 @@
 package com.winning.ptc.liquid.snippet.a04_diff;
 
-import com.alibaba.fastjson.JSON;
-import com.winning.ptc.liquid.snippet.a02_diff.MyDiffCommand;
 import liquibase.CatalogAndSchema;
 import liquibase.database.Database;
-import liquibase.database.DatabaseConnection;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.ObjectQuotingStrategy;
-import liquibase.database.core.H2Database;
-import liquibase.database.jvm.JdbcConnection;
 import liquibase.diff.DiffGeneratorFactory;
 import liquibase.diff.DiffResult;
-import liquibase.diff.ObjectDifferences;
 import liquibase.diff.compare.CompareControl;
 import liquibase.diff.output.report.DiffToReport;
 import liquibase.exception.DatabaseException;
@@ -20,13 +14,10 @@ import liquibase.snapshot.DatabaseSnapshot;
 import liquibase.snapshot.InvalidExampleException;
 import liquibase.snapshot.SnapshotControl;
 import liquibase.snapshot.SnapshotGeneratorFactory;
-import liquibase.structure.DatabaseObject;
 
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Set;
 
-public class DiffDeep {
+public class DiffSnapshot {
 
     public static void main(String[] args) throws SQLException, DatabaseException, InvalidExampleException {
         DatabaseSnapshot referenceDatabaseSnapshot = createSnapshot("jdbc:h2:./test", "sa", "sa");
@@ -43,8 +34,8 @@ public class DiffDeep {
 //            System.out.println(changedObjects.getValue());
 //        }
 
-        JSON.toJSONString(diffResult, true);
-//        new DiffToReport(diffResult, System.out).print();
+//        JSON.toJSONString(diffResult, true);
+        new DiffToReport(diffResult, System.out).print();
 
     }
 

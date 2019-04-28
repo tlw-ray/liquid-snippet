@@ -43,8 +43,8 @@ public class Snapshot {
         SnapshotCommand snapshotCommand = new SnapshotCommand();
         snapshotCommand.setDatabase(h2Database1);
 //        snapshotCommand.setSerializerFormat("json");
-//        snapshotCommand.setSerializerFormat("yml");
-        snapshotCommand.setSerializerFormat("xml");
+        snapshotCommand.setSerializerFormat("yml");
+//        snapshotCommand.setSerializerFormat("xml");
 //        snapshotCommand.setSerializerFormat("txt");
         SnapshotCommand.SnapshotCommandResult snapshotCommandResult = snapshotCommand.execute();
         System.out.println(snapshotCommandResult.print());
@@ -56,7 +56,7 @@ public class Snapshot {
         CatalogAndSchema[] schemas = new CatalogAndSchema[]{h2Database1.getDefaultSchema()};
         h2Database1.setObjectQuotingStrategy(ObjectQuotingStrategy.QUOTE_ALL_OBJECTS);
         DatabaseSnapshot snapshot = SnapshotGeneratorFactory.getInstance().createSnapshot(schemas, h2Database1, snapshotControl);
-        String format = "json"; //txt, yml
+        String format = "yml"; //txt, yml
         String string = SnapshotSerializerFactory.getInstance().getSerializer(format).serialize(snapshot, true);
         System.out.println(string);
     }
