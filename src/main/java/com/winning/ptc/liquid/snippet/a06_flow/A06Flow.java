@@ -92,8 +92,6 @@ public class A06Flow {
         DiffToChangeLog diffToChangeLog1 = new DiffToChangeLog(diffResult1, diffOutputControl);
         message("生成逆向变化记录SQL");
         diffToChangeLog1.print("changelog1.mssql.sql", ChangeLogSerializerFactory.getInstance().getSerializer("sql"));
-
-
     }
 
     private static void makeSnapshot(Database database, File snapshotFile) throws LiquibaseException, IOException {
