@@ -13,10 +13,14 @@ apply from: 'dependency.gradle'
 //}
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
     maven {
         url "https://plugins.gradle.org/m2/"
     }
+    mavenCentral()
 }
 
 //subprojects {
@@ -41,7 +45,9 @@ dependencies {
             libraries."commons-io",
             libraries.h2,
             libraries.liquibase,
+            libraries.lombok,
             libraries.fastjson,
+            libraries.'mongo-java-driver',
             libraries.'spring-boot-devtools',
             libraries.'spring-boot-starter-jdbc',
             libraries.'spring-boot-starter-web',

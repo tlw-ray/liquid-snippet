@@ -2,11 +2,8 @@ package com.winning.ptc.liquid.snippet.a06_flow;
 
 import com.winning.ptc.liquid.snippet.Common;
 import liquibase.CatalogAndSchema;
-import liquibase.command.core.DiffToChangeLogCommand;
-import liquibase.command.core.SnapshotCommand;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
-import liquibase.database.ObjectQuotingStrategy;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.diff.DiffGeneratorFactory;
 import liquibase.diff.DiffResult;
@@ -34,7 +31,7 @@ public class A06Flow {
     public static void main(String[] args) throws Exception {
         String dbName = "test4";
 
-        //删除之前创建的文件
+        //0. 删除之前创建的文件
         message("删文件");
         File h2File = new File(dbName + ".h2.db");
         File traceFile = new File(dbName + ".trace.db");
@@ -47,25 +44,38 @@ public class A06Flow {
         Connection connection = DriverManager.getConnection("jdbc:h2:./" + dbName);
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
 
-        //2. 做快照1
+        //2. 建表
+        message("建表");
+        String createTable1 = "CREATE TABLE TEST1(ID INT PRIMARY KEY, NAME VARCHAR(255), DESC VARCHAR(255))";
+        try(Statement statement = connection.createStatement()) {
+            boolean result = statement.execute(createTable1);
+            System.out.println("Create table return: " + result);
+        }
+
+        //3. 做快照1
         message("做快照1");
         File snapshotFile1 = new File("snap1.yml");
         makeSnapshot(database, snapshotFile1);
 
-        //3. 建表
-        message("建表");
-        String createTable = "CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))";
+        //4. 改表
+        message("改表");
+        String createTable1_1 = "ALTER TABLE TEST1 ALTER COLUMN NAME VARCHAR(32)";
         try(Statement statement = connection.createStatement()) {
-            boolean result = statement.execute(createTable);
+            boolean result = statement.execute(createTable1_1);
+            System.out.println("Create table return: " + result);
+        }
+        String createTable2 = "CREATE TABLE TEST2(ID INT PRIMARY KEY, NAME VARCHAR(255))";
+        try(Statement statement = connection.createStatement()) {
+            boolean result = statement.execute(createTable2);
             System.out.println("Create table return: " + result);
         }
 
-        //3. 做快照2
+        //5. 做快照2
         message("做快照2");
         File snapshotFile2 = new File("snap2.yml");
         makeSnapshot(database, snapshotFile2);
 
-        //4. 加载并对比快照1, 2 生成报告和可执行语句
+        //6. 加载并对比快照1, 2 生成报告和可执行语句
         message("加载快照");
         YamlSnapshotParser yamlSnapshotParser = new YamlSnapshotParser();
         DatabaseSnapshot databaseSnapshot1 = yamlSnapshotParser.parse(snapshotFile1.getPath(), resourceAccessor);
@@ -79,8 +89,9 @@ public class A06Flow {
         DiffToChangeLog diffToChangeLog = new DiffToChangeLog(diffResult, diffOutputControl);
         message("生成变化记录脚本YML");
 //        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("yml"));
-        message("生成变化记录SQL");
+        message("生成正向变化记录SQL");
         diffToChangeLog.print("changelog.mssql.sql", ChangeLogSerializerFactory.getInstance().getSerializer("sql"));
+
         message("生成变化记录XML");
 //        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("xml"));
         message("生成变化记录JSON");

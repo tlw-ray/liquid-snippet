@@ -102,7 +102,7 @@ public class MyDiffToReport {
                 continue;
             }
             printSetComparison("缺失: " + getTypeName(type), diffResult.getMissingObjects(type, comparator), out);
-            printSetComparison("意外: " + getTypeName(type), diffResult.getUnexpectedObjects(type, comparator), out);
+            printSetComparison("多余: " + getTypeName(type), diffResult.getUnexpectedObjects(type, comparator), out);
 
             printChangedComparison("改变: " + getTypeName(type), diffResult.getChangedObjects(type, comparator), out);
 
@@ -120,10 +120,10 @@ public class MyDiffToReport {
     }
 
     protected void printChangedComparison(String title, Map<? extends DatabaseObject, ObjectDifferences> objects, PrintStream out) {
-        out.print(title + ": ");
         if (objects.isEmpty()) {
-            out.println("无");
+//            out.println("无");
         } else {
+            out.print(title + ": ");
             out.println();
             for (Map.Entry<? extends DatabaseObject, ObjectDifferences> object : objects.entrySet()) {
                 if (object.getValue().hasDifferences()) {
@@ -137,11 +137,11 @@ public class MyDiffToReport {
     }
 
     protected void printSetComparison(String title, Set<? extends DatabaseObject> objects, PrintStream out) {
-        out.print(title + ": ");
         Schema lastSchema = null;
         if (objects.isEmpty()) {
-            out.println("无");
+//            out.println("无");
         } else {
+            out.print(title + ": ");
             out.println();
             for (DatabaseObject object : objects) {
                 if (getIncludeSchema() && (object.getSchema() != null) && ((lastSchema == null) || !lastSchema.equals
@@ -168,42 +168,6 @@ public class MyDiffToReport {
         }
         return schemaName;
     }
-
-//    private void printColumnComparison(SortedSet<Column> changedColumns,
-//                                       PrintStream out) {
-//        out.print("Changed Columns: ");
-//        if (changedColumns.size() == 0) {
-//            out.println("NONE");
-//        } else {
-//            out.println();
-//            for (Column column : changedColumns) {
-//                out.println("     " + column);
-//                Column baseColumn = diffResult.getReferenceSnapshot().getColumn(column.getRelation().getSchema(),
-//                        column.getRelation().getName(), column.getName());
-//                if (baseColumn != null) {
-//                    if (baseColumn.isDataTypeDifferent(column)) {
-//                        out.println("           from "
-//                                + baseColumn.getType()
-//                                + " to "
-//                                + diffResult.getComparisonSnapshot().getColumn(column.getRelation().getSchema(), column.getRelation().getName(), column.getName()).getType());
-//                    }
-//                    if (baseColumn.isNullabilityDifferent(column)) {
-//                        Boolean nowNullable = diffResult.getComparisonSnapshot().getColumn(column.getRelation().getSchema(),
-//                                column.getRelation().getName(), column.getName())
-//                                .isNullable();
-//                        if (nowNullable == null) {
-//                            nowNullable = Boolean.TRUE;
-//                        }
-//                        if (nowNullable) {
-//                            out.println("           now nullable");
-//                        } else {
-//                            out.println("           now not null");
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     protected void printComparison(String title, StringDiff string, PrintStream out) {
         out.print(title + ":");
