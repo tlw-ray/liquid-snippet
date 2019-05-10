@@ -2,7 +2,6 @@ package com.winning.ptc.liquid.snippet.a07_system;
 
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -16,9 +15,9 @@ public class T01_WriteMongo {
     static MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("snapshot");
     public static void main(String[] args){
         //SQLServer UUID 32位
-//        String uuid = "8a80cb816a86d8eb016a86dca6e30001";
+        String uuid = "8a80cb816a86d8eb016a86dca6e30001";
         //Mongo UUID 24位
-        String uuid = "5ccf97a691a8dd0006199ba0";
+//        String uuid = "5ccf97a691a8dd0006199ba0";
 
         //Insert
         insert(uuid);

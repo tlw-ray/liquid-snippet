@@ -9,9 +9,6 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ResourceAccessor;
-import org.apache.commons.io.FileUtils;
-import org.h2.util.IOUtils;
-import org.h2.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

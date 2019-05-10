@@ -47,6 +47,7 @@ dependencies {
             libraries.liquibase,
             libraries.lombok,
             libraries.fastjson,
+            libraries.mssql,
             libraries.'mongo-java-driver',
             libraries.'spring-boot-devtools',
             libraries.'spring-boot-starter-jdbc',
