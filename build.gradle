@@ -52,6 +52,7 @@ dependencies {
             libraries.'spring-boot-devtools',
             libraries.'spring-boot-starter-jdbc',
             libraries.'spring-boot-starter-web',
+            libraries.'spring-boot-starter-data-mongo',
     )
     testCompile(
             libraries.junit,
