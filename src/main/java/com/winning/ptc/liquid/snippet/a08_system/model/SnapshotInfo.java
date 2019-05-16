@@ -1,4 +1,4 @@
-package com.winning.ptc.liquid.snippet.a07_system.model;
+package com.winning.ptc.liquid.snippet.a08_system.model;
 
 import lombok.Data;
 

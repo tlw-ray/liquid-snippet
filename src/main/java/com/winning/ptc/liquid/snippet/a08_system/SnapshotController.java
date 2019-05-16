@@ -1,7 +1,7 @@
-package com.winning.ptc.liquid.snippet.a07_system;
+package com.winning.ptc.liquid.snippet.a08_system;
 
-import com.winning.ptc.liquid.snippet.a07_system.model.DiffResult;
-import com.winning.ptc.liquid.snippet.a07_system.model.SnapshotInfo;
+import com.winning.ptc.liquid.snippet.a08_system.model.DbvDiffResult;
+import com.winning.ptc.liquid.snippet.a08_system.model.SnapshotInfo;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,5 +12,5 @@ public interface SnapshotController {
     SnapshotInfo updateSnapshot(SnapshotInfo snapshotInfo);
     SnapshotInfo[] listSnapshot(UUID connectionRef, Date from, Date to);
 
-    DiffResult diff(UUID snapshot1, UUID snapshot2);
+    DbvDiffResult diff(UUID snapshot1, UUID snapshot2);
 }

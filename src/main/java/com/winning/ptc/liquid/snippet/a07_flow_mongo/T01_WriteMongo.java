@@ -1,4 +1,4 @@
-package com.winning.ptc.liquid.snippet.a07_system;
+package com.winning.ptc.liquid.snippet.a07_flow_mongo;
 
 
 import com.mongodb.MongoClient;
