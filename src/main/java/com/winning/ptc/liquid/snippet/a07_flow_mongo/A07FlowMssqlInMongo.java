@@ -35,10 +35,7 @@ import org.bson.conversions.Bson;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Statement;
 import java.util.Map;
@@ -80,7 +77,7 @@ public class A07FlowMssqlInMongo {
         //4. 做快照1并将快照存入Mongo数据库备案
         message("做快照1");
         String snapshotUuid1 = createSnapshotAndSaveToMongo(mssqlDatabase);
-
+        System.out.println("Snapshot01: " + snapshotUuid1);
 
         //5. 改表
         message("改表");
@@ -98,6 +95,7 @@ public class A07FlowMssqlInMongo {
         //6. 做快照2并将快照存入Mongo数据库备案
         message("做快照2");
         String snapshotUuid2 = createSnapshotAndSaveToMongo(mssqlDatabase);
+        System.out.println("Snapshot02: " + snapshotUuid2);
 
         //7. 加载并对比快照1, 2 生成报告和可执行语句
         message("加载快照");
@@ -160,7 +158,7 @@ public class A07FlowMssqlInMongo {
         return uuid;
     }
 
-    private static DatabaseSnapshot loadSnapshotFromMongo(String uuid) throws UnsupportedEncodingException, LiquibaseParseException, DatabaseException, InvalidExampleException, ParsedNodeException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private static DatabaseSnapshot loadSnapshotFromMongo(String uuid) throws IOException, LiquibaseParseException, DatabaseException, InvalidExampleException, ParsedNodeException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         //从mongoDB根据UUID获取快照内容
         Bson filter = Common.createUuidFilter(uuid);
         Document document = mongoCollection.find(filter).first();
@@ -169,26 +167,28 @@ public class A07FlowMssqlInMongo {
 
         //将json
         Yaml yaml = new Yaml(new SafeConstructor());
-        //TODO close
         CharSequenceInputStream charSequenceInputStream = new CharSequenceInputStream(json, "utf-8");
-        InputStreamReader inputStreamReader = new InputStreamReader(charSequenceInputStream, ((GlobalConfiguration)LiquibaseConfiguration.getInstance().getConfiguration(GlobalConfiguration.class)).getOutputEncoding());
-        Map parsedYaml = yaml.load(inputStreamReader);
-        Map rootList = (Map)parsedYaml.get("snapshot");
-        if (rootList == null) {
-            throw new LiquibaseParseException("Could not find root snapshot node");
+        try(InputStreamReader inputStreamReader = new InputStreamReader(charSequenceInputStream, (LiquibaseConfiguration.getInstance().getConfiguration(GlobalConfiguration.class)).getOutputEncoding())) {
+            Map parsedYaml = yaml.load(inputStreamReader);
+            Map rootList = (Map) parsedYaml.get("snapshot");
+            if (rootList == null) {
+                throw new LiquibaseParseException("Could not find root snapshot node");
+            }
+            String shortName = (String) ((Map) rootList.get("database")).get("shortName");
+            Database database = DatabaseFactory.getInstance().getDatabase(shortName).getClass().getConstructor().newInstance();
+            database.setConnection(new OfflineConnection("offline:" + shortName, null));
+            DatabaseSnapshot snapshot = new RestoredDatabaseSnapshot(database);
+            ParsedNode snapshotNode = new ParsedNode(null, "snapshot");
+            snapshotNode.setValue(rootList);
+            Map metadata = (Map) rootList.get("metadata");
+            if (metadata != null) {
+                snapshot.getMetadata().putAll(metadata);
+            }
+            snapshot.load(snapshotNode, Common.getResourceAccessor());
+            return snapshot;
+        }finally{
+            charSequenceInputStream.close();
         }
-        String shortName = (String)((Map)rootList.get("database")).get("shortName");
-        Database database = DatabaseFactory.getInstance().getDatabase(shortName).getClass().getConstructor().newInstance();
-        database.setConnection(new OfflineConnection("offline:" + shortName, (ResourceAccessor)null));
-        DatabaseSnapshot snapshot = new RestoredDatabaseSnapshot(database);
-        ParsedNode snapshotNode = new ParsedNode((String)null, "snapshot");
-        snapshotNode.setValue(rootList);
-        Map metadata = (Map)rootList.get("metadata");
-        if (metadata != null) {
-            snapshot.getMetadata().putAll(metadata);
-        }
-        snapshot.load(snapshotNode, Common.getResourceAccessor());
-        return  snapshot;
     }
 
     private static void message(String message){
