@@ -23,12 +23,18 @@
 - Liquibase
 - H2
 - MongoDB(用于存放快照)
-    
-## [1. 在Spring项目中使用Liquibase初始化数据库](src/main/java/com/winning/ptc/liquid/snippet/a01_init/readme.md)
-## [2. 使用Liquibase对比数据库](src/main/java/com/winning/ptc/liquid/snippet/a02_diff/readme.md)
-## [3. 使用Liquibase建立数据库快照](src/main/java/com/winning/ptc/liquid/snippet/a03_snapshot/readme.md)
-## [4. Diff 通过底层API对快照进行对比](src/main/java/com/winning/ptc/liquid/snippet/a04_diff/readme.md)
-## [5. Init 根据改变日志创建数据库](src/main/java/com/winning/ptc/liquid/snippet/a05_init/readme.md)
-## [6. 数据库版本差异检查的完整实现](src/main/java/com/winning/ptc/liquid/snippet/a06_flow/readme.md)
-## [7. SQLServer数据库快照存放在Mongo以便对之前的快照做对比](src/main/java/com/winning/ptc/liquid/snippet/a07_flow_mongo/readme.md)
-## [8. 数据库版本差异检查系统RESTful服务](src/main/java/com/winning/ptc/liquid/snippet/a08_system/readme.md)
+
+## 功能目录
+
+### [1. 在Spring项目中使用Liquibase初始化数据库](src/main/java/com/winning/ptc/liquid/snippet/a01_init/readme.md)
+### [2. 使用Liquibase对比数据库](src/main/java/com/winning/ptc/liquid/snippet/a02_diff/readme.md)
+### [3. 使用Liquibase建立数据库快照](src/main/java/com/winning/ptc/liquid/snippet/a03_snapshot/readme.md)
+### [4. Diff 通过底层API对快照进行对比](src/main/java/com/winning/ptc/liquid/snippet/a04_diff/readme.md)
+### [5. Init 根据改变日志创建数据库](src/main/java/com/winning/ptc/liquid/snippet/a05_init/readme.md)
+### [6. 数据库版本差异检查的完整实现](src/main/java/com/winning/ptc/liquid/snippet/a06_flow/readme.md)
+### [7. SQLServer数据库快照存放在Mongo以便对之前的快照做对比](src/main/java/com/winning/ptc/liquid/snippet/a07_flow_mongo/readme.md)
+### [8. 数据库版本差异检查系统RESTful服务](src/main/java/com/winning/ptc/liquid/snippet/a08_system/readme.md)
+
+## 待完成
+
+### 英文版文档
