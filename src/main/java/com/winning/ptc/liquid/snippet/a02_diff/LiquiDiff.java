@@ -20,18 +20,18 @@ import java.sql.SQLException;
 
 public class LiquiDiff {
 
-    public static void main(String[] args) throws SQLException, DatabaseException, InvalidExampleException {
+    public static void main(String[] args) throws Exception {
         //操作1: 获得数据库之间的差异的文本描述
-//        diffCommand();
+        diffCommand();
 
         //操作2: 获得差异的XML
-//        diffToChangeLogCommand();
+        diffToChangeLogCommand();
 
         //操作3: 获得差异的XML
-//        generateChangeLogCommand();
+        generateChangeLogCommand();
 
-        //操作4: 自定义的对比操作，输出DiffResult
-        myDiffCommand();
+        //操作4: 通过MyDiffCommand和MyDiffReport输出中文的DiffResult
+//        myDiffCommand();
     }
 
     private static void diffCommand() throws SQLException, CommandExecutionException {

@@ -9,7 +9,7 @@ import java.util.Map;
  * MongoDB不支持json在字段名中包含'.', '$', '\\'等特殊字符
  * 参考: https://docs.mongodb.com/manual/core/document/
  * 要将Liquibase产生的JSON格式的Snapshot中包含'.'字符
- * 为了将这种json存储入MongoDB
+ * 为了这种json存储入MongoDB
  * 需要先将JSON的key中的'.'在存入前进行转换才能存储，否则会报异常。
  * 读取MongoDB中的snapshot后需要做转化才能够使用。
  * 目前是将'.'与"__d__"相互替换。

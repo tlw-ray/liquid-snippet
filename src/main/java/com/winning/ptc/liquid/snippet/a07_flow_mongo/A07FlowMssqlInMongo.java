@@ -77,7 +77,7 @@ public class A07FlowMssqlInMongo {
             System.out.println("Create table return: " + result);
         }
 
-        //4. 做快照1
+        //4. 做快照1并将快照存入Mongo数据库备案
         message("做快照1");
         String snapshotUuid1 = createSnapshotAndSaveToMongo(mssqlDatabase);
 
@@ -95,7 +95,7 @@ public class A07FlowMssqlInMongo {
             System.out.println("Create table return: " + result);
         }
 
-        //6. 做快照2
+        //6. 做快照2并将快照存入Mongo数据库备案
         message("做快照2");
         String snapshotUuid2 = createSnapshotAndSaveToMongo(mssqlDatabase);
 
@@ -105,7 +105,8 @@ public class A07FlowMssqlInMongo {
         DatabaseSnapshot databaseSnapshot2 = loadSnapshotFromMongo(snapshotUuid2);
         DiffResult diffResult = DiffGeneratorFactory.getInstance().compare(databaseSnapshot1, databaseSnapshot2, CompareControl.STANDARD);
 
-        message("生成快照对比报告");
+        //8. 生成快照比对报告
+        message("生成人类可读快照对比报告");
         DbvDiffResult dbvDiffResult = new DbvDiffResult();
         try(
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -116,36 +117,24 @@ public class A07FlowMssqlInMongo {
             dbvDiffResult.setReport(report);
         }
 
-
+        //9. 生成SQL补丁
         DiffOutputControl diffOutputControl = new DiffOutputControl();
-//        DiffToChangeLog diffToChangeLog = new DiffToChangeLog(diffResult, diffOutputControl);
-//        message("生成变化记录脚本YML");
-////        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("yml"));
-//        message("生成正向变化记录SQL");
-//        diffToChangeLog.print("changelog.mssql.sql", ChangeLogSerializerFactory.getInstance().getSerializer("sql"));
-//
-//        message("生成变化记录XML");
-////        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("xml"));
-//        message("生成变化记录JSON");
-////        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("json"));
-//        message("生成变化记录TXT");
-////        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("xx.txt"));
-//
         DiffResult diffResult1 = DiffGeneratorFactory.getInstance().compare(databaseSnapshot2, databaseSnapshot1, CompareControl.STANDARD);
         DiffToChangeLog diffToChangeLog1 = new DiffToChangeLog(diffResult1, diffOutputControl);
-//        message("生成逆向变化记录SQL");
-////        diffToChangeLog1.print("changelog1.mssql.sql", ChangeLogSerializerFactory.getInstance().getSerializer("sql"));
-
         try(ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(byteArrayOutputStream)) {
+            PrintStream printStream = new PrintStream(byteArrayOutputStream)) {
+            //由于其内部实现未打算对流进行支持，所以对文件名进行了校验，这里提供一个文件名以通过校验
             diffToChangeLog1.setChangeSetPath("changelog.mssql.sql");
             diffToChangeLog1.print(printStream, ChangeLogSerializerFactory.getInstance().getSerializer("sql"));
             byte[] bytes = byteArrayOutputStream.toByteArray();
             String sqlReport = new String(bytes, "utf8");
             dbvDiffResult.setPatchQuery(sqlReport);
-            printStream.close();
         }
+
+        //10. 将人类可读报告与SQL补丁输出到控制台
+        message("Patch Query");
         System.out.println(dbvDiffResult.getPatchQuery());
+        message("Report");
         System.out.println(dbvDiffResult.getReport());
     }
 

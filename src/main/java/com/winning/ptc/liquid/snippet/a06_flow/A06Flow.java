@@ -87,17 +87,8 @@ public class A06Flow {
 
         DiffOutputControl diffOutputControl = new DiffOutputControl();
         DiffToChangeLog diffToChangeLog = new DiffToChangeLog(diffResult, diffOutputControl);
-        message("生成变化记录脚本YML");
-//        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("yml"));
         message("生成正向变化记录SQL");
         diffToChangeLog.print("changelog.mssql.sql", ChangeLogSerializerFactory.getInstance().getSerializer("sql"));
-
-        message("生成变化记录XML");
-//        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("xml"));
-        message("生成变化记录JSON");
-//        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("json"));
-        message("生成变化记录TXT");
-//        diffToChangeLog.print(System.out, ChangeLogSerializerFactory.getInstance().getSerializer("xx.txt"));
 
         DiffResult diffResult1 = DiffGeneratorFactory.getInstance().compare(databaseSnapshot2, databaseSnapshot1, CompareControl.STANDARD);
         DiffToChangeLog diffToChangeLog1 = new DiffToChangeLog(diffResult1, diffOutputControl);

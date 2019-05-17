@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.winning.ptc.liquid.snippet.Common;
+import com.winning.ptc.liquid.snippet.MongoJsonConverter;
 import liquibase.CatalogAndSchema;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
@@ -25,30 +26,33 @@ public class T01_WriteMongo{
     static MongoClient mongoClient = new com.mongodb.MongoClient("172.16.6.161", 27017);
     static MongoDatabase mongoDatabase = mongoClient.getDatabase("ods_dbv");
     static MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("snapshot");
-    public static void main(String[] args) throws DatabaseException, InvalidExampleException {
+    static MongoJsonConverter mongoJsonConverter = new MongoJsonConverter();
+    public static void main(String[] args){
+        //从数据库建立Snapshot
 //        String snapshotJSON = createSnapshot();
 //        System.out.println(snapshotJSON);
 
-        String snapshotJSON = "{na.me: 'aa'}";
+        //一个模拟的键带'.'字符的json
+        String snapshotJSON = "{'na.me': 'aa'}";
 
-        //SQLServer UUID 32位
+        //Java UUID 32位
         String uuid = "8a80cb816a86d8eb016a86dca6e30006";
-        //Mongo UUID 24位
-//        String uuid = "5ccf97a691a8dd0006199ba0";
 
-        //Insert 插入前做转义编码
+        //写入数据库耗时
         long start = System.currentTimeMillis();
         insert(uuid, snapshotJSON);
         System.out.println("Insert spend: " + (System.currentTimeMillis() - start));
 
-        //find 查询后做转义解码
+        //根据UUID查询耗时
         start = System.currentTimeMillis();
         String found = find(uuid);
         System.out.println(found);
-        System.out.println("Find by id spend: " + (System.currentTimeMillis() - start));
+        System.out.println("Find by uuid spend: " + (System.currentTimeMillis() - start));
 
-        //delete
-//        delete(uuid);
+        //根据UUID删除耗时
+        start = System.currentTimeMillis();
+        delete(uuid);
+        System.out.println("Delete by uuid spend: " + (System.currentTimeMillis() - start));
     }
 
     private static String createSnapshot() throws DatabaseException, InvalidExampleException {
@@ -69,30 +73,17 @@ public class T01_WriteMongo{
         Bson filter = createFilter(uuid);
         FindIterable<Document> findIterable = mongoCollection.find(filter);
         String json = findIterable.first().toJson();
-        return escapeDecode(json);
+        //查询后转义: 将字段中的'__d__'替换为'.'
+        return mongoJsonConverter.decode(json);
     }
 
     private static void insert(String uuid, String json){
-        json = escapeEncode(json);
+        //写入前转义: 将字段名中的'.'替换为'__d__'
+        json = mongoJsonConverter.encode(json);
         System.out.println(json);
         Document document = Document.parse(json);
         document.put("_id", uuid);
         mongoCollection.insertOne(document);
-    }
-
-    public static String escapeEncode(String json){
-        //        \  -->  \\
-        //        $  -->  \u0024
-        //        .  -->  \u002e
-        return json.replaceAll("\\.", "___d___")
-                .replaceAll("\\$", "___dl___")
-                .replaceAll("\\\\", "___s___");
-    }
-
-    public static String escapeDecode(String json){
-        return json.replaceAll("___d___", ".")
-                .replaceAll("___dl___", "$")
-                .replaceAll("___s___", "\\");
     }
 
     private static void delete(String uuid){

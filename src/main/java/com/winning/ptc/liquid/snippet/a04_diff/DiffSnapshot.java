@@ -17,6 +17,7 @@ import liquibase.snapshot.SnapshotGeneratorFactory;
 
 import java.sql.SQLException;
 
+//对数据快照做对比
 public class DiffSnapshot {
 
     public static void main(String[] args) throws SQLException, DatabaseException, InvalidExampleException {
@@ -24,17 +25,20 @@ public class DiffSnapshot {
         DatabaseSnapshot targetDatabaseSnapshot = createSnapshot("jdbc:h2:mem:test", null, null);
         DiffResult diffResult = DiffGeneratorFactory.getInstance().compare(referenceDatabaseSnapshot, targetDatabaseSnapshot, CompareControl.STANDARD);
 
+        //只输出Missing的对象
 //        System.out.println("Missing");
 //        for(DatabaseObject databaseObject : diffResult.getMissingObjects()){
 //            System.out.println(databaseObject.getObjectTypeName() + ": " + databaseObject.getName());
 //        }
+//
+        //只输出Changed的对象
 //        System.out.println("Changed");
 //        for(Map.Entry<DatabaseObject, ObjectDifferences> changedObjects : diffResult.getChangedObjects().entrySet()){
 //            System.out.println(changedObjects.getKey());
 //            System.out.println(changedObjects.getValue());
 //        }
 
-//        JSON.toJSONString(diffResult, true);
+        //输出所有报告
         new DiffToReport(diffResult, System.out).print();
 
     }

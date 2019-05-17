@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @SpringBootApplication
 @Component
 public class T02_SpringMongo {
+    //通过SpringBoot注入芒果的连接
     public static void main(String[] args){
         ApplicationContext applicationContext = SpringApplication.run(T02_SpringMongo.class, args);
         MongoClient mongoClient = applicationContext.getBean(MongoClient.class);
