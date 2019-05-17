@@ -30,5 +30,5 @@
 ## [4. Diff 通过底层API对快照进行对比](src/main/java/com/winning/ptc/liquid/snippet/a04_diff/readme.md)
 ## [5. Init 根据改变日志创建数据库](src/main/java/com/winning/ptc/liquid/snippet/a05_init/readme.md)
 ## [6. 数据库版本差异检查的完整实现](src/main/java/com/winning/ptc/liquid/snippet/a06_flow/readme.md)
-## [7. 数据库版本差异检查数据存Mongo](src/main/java/com/winning/ptc/liquid/snippet/a07_flow_mongo/readme.md)
+## [7. SQLServer数据库快照存放在Mongo以便对之前的快照做对比](src/main/java/com/winning/ptc/liquid/snippet/a07_flow_mongo/readme.md)
 ## [8. 数据库版本差异检查系统RESTful服务](src/main/java/com/winning/ptc/liquid/snippet/a08_system/readme.md)
