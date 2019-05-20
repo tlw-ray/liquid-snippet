@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.winning.ptc.liquid.snippet.Common;
 import com.winning.ptc.liquid.snippet.MongoJsonConverter;
+import com.winning.ptc.liquid.snippet.a02_diff.MyDiffToReport;
 import com.winning.ptc.liquid.snippet.a08_system.model.DbvDiffResult;
 import liquibase.CatalogAndSchema;
 import liquibase.configuration.GlobalConfiguration;
@@ -109,7 +110,8 @@ public class A07FlowMssqlInMongo {
         try(
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(byteArrayOutputStream)){
-            new DiffToReport(diffResult, printStream).print();
+//            new DiffToReport(diffResult, printStream).print();
+            new MyDiffToReport(diffResult, printStream).print();
             byte[] bytes = byteArrayOutputStream.toByteArray();
             String report = new String(bytes, "utf8");
             dbvDiffResult.setReport(report);

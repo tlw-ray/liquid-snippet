@@ -27,12 +27,12 @@ public class MyDiffToReport {
 
     public void print() throws DatabaseException {
         final DatabaseObjectComparator comparator = new DatabaseObjectComparator();
-        out.println("参照数据库: " + diffResult.getReferenceSnapshot().getDatabase());
-        out.println("对比数据库: " + diffResult.getComparisonSnapshot().getDatabase());
+        out.println("参照快照: " + diffResult.getReferenceSnapshot().getDatabase() + "<br>");
+        out.println("目标目标: " + diffResult.getComparisonSnapshot().getDatabase() + "<br>");
 
         CompareControl.SchemaComparison[] schemas = diffResult.getCompareControl().getSchemaComparisons();
         if ((schemas != null) && (schemas.length > 0)) {
-            out.println("对比Schemas: " + StringUtils.join(Arrays.asList(schemas), ", ", new StringUtils.StringUtilsFormatter<CompareControl.SchemaComparison>() {
+            out.println("目标Schemas: " + StringUtils.join(Arrays.asList(schemas), ", ", new StringUtils.StringUtilsFormatter<CompareControl.SchemaComparison>() {
                 @Override
                 public String toString(CompareControl.SchemaComparison obj) {
                     String referenceName;
@@ -83,7 +83,7 @@ public class MyDiffToReport {
                         return referenceName + " -> " + comparisonName;
                     }
                 }
-            }, true));
+            }, true) + "<br>");
         }
 
         printComparison("产品名称", diffResult.getProductNameDiff(), out);
@@ -102,7 +102,7 @@ public class MyDiffToReport {
                 continue;
             }
             printSetComparison("缺失: " + getTypeName(type), diffResult.getMissingObjects(type, comparator), out);
-            printSetComparison("多余: " + getTypeName(type), diffResult.getUnexpectedObjects(type, comparator), out);
+            printSetComparison("新增: " + getTypeName(type), diffResult.getUnexpectedObjects(type, comparator), out);
 
             printChangedComparison("改变: " + getTypeName(type), diffResult.getChangedObjects(type, comparator), out);
 
@@ -124,12 +124,12 @@ public class MyDiffToReport {
 //            out.println("无");
         } else {
             out.print(title + ": ");
-            out.println();
+            out.println("<br>");
             for (Map.Entry<? extends DatabaseObject, ObjectDifferences> object : objects.entrySet()) {
                 if (object.getValue().hasDifferences()) {
-                    out.println("     " + object.getKey());
+                    out.println("     " + object.getKey() + "<br>");
                     for (Difference difference : object.getValue().getDifferences()) {
-                        out.println("          " + difference.toString());
+                        out.println("          " + difference.toString() + "<br>");
                     }
                 }
             }
@@ -142,7 +142,7 @@ public class MyDiffToReport {
 //            out.println("无");
         } else {
             out.print(title + ": ");
-            out.println();
+            out.println("<br>");
             for (DatabaseObject object : objects) {
                 if (getIncludeSchema() && (object.getSchema() != null) && ((lastSchema == null) || !lastSchema.equals
                         (object.getSchema()))) {
@@ -153,9 +153,9 @@ public class MyDiffToReport {
                     }
                     schemaName = includeSchemaComparison(schemaName);
 
-                    out.println("  SCHEMA: " + schemaName);
+                    out.println("  SCHEMA: " + schemaName + "<br>");
                 }
-                out.println("     " + object);
+                out.println("     " + object + "<br>");
             }
         }
     }
@@ -178,7 +178,7 @@ public class MyDiffToReport {
         }
 
         if (string.areEqual()) {
-            out.println("相同: " + string.getReferenceVersion());
+            out.println("相同: " + string.getReferenceVersion() + "<br>");
         } else {
             String referenceVersion = string.getReferenceVersion();
             if (referenceVersion == null) {
@@ -195,10 +195,9 @@ public class MyDiffToReport {
             }
 
 
-            out.println();
-            out.println("     参照:   "
-                    + referenceVersion);
-            out.println("     目标: " + targetVersion);
+            out.println("<br>");
+            out.println("     参照:   " + referenceVersion + "<br>");
+            out.println("     目标: " + targetVersion + "<br>");
         }
 
     }
